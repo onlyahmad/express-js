@@ -1,12 +1,15 @@
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
+
 const saltRounds = 10;
 
-const encrypt=(password)=>{
-    return bcrypt.hashSync(password, saltRounds);
-}
+// Encrypt password (sync)
+const encrypt = (password) => {
+  return bcrypt.hashSync(password, saltRounds);
+};
 
-const compare =(password,hash)=>{
-    return bcrypt.compareSync(password, hash);
-}
+// Compare password (sync)
+const compare = (password, hash) => {
+  return bcrypt.compareSync(password, hash);
+};
 
-export {encrypt,compare}
+export { encrypt, compare };

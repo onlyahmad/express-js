@@ -1,6 +1,6 @@
 import sequelize from "../utils/db.js";
 import { Sequelize } from "sequelize";
-import {encrypt} from "../utils/bcrypt.js";
+import { encrypt } from "../utils/bcrypt.js";
 import moment from "moment";
 
 const User = sequelize.define(
@@ -31,7 +31,9 @@ const User = sequelize.define(
       type: Sequelize.STRING,
       allowNull: false,
       set(value) {
-        this.setDataValue("password", encrypt(value));
+        if (value) {
+          this.setDataValue("password", encrypt(value));
+        }
       },
     },
     isActive: {
@@ -41,8 +43,11 @@ const User = sequelize.define(
     expireTime: {
       type: Sequelize.DATE,
       set(value) {
-        if (value !== null) {
-          this.setDataValue("expireTime", moment(value).add(1, "hours").toDate());
+        if (value) {
+          this.setDataValue(
+            "expireTime",
+            moment(value).add(1, "hours").toDate()
+          );
         } else {
           this.setDataValue("expireTime", null);
         }
@@ -50,12 +55,10 @@ const User = sequelize.define(
     },
   },
   {
-    tableName: "user",   // <- taruh di sini
+    tableName: "user",
     underscored: true,
-    timestamps: true,    // otomatis ada createdAt & updatedAt (opsional)
+    timestamps: true, // created_at & updated_at
   }
 );
-
-sequelize.sync();
 
 export default User;
